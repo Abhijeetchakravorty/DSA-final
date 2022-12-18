@@ -113,7 +113,25 @@ class MyLinkedList:
         return result_tail.next
     
     def flattenList(self, head):
-        self.printList(head)
+        temp = head
+        arr = []
+        res = []
+        while(temp):
+            if (temp.next):
+                if (temp.child):
+                    arr.append(temp.next)
+                    temp.next = temp.child
+                    temp.child = None
+                    temp = temp.next
+            else:
+                node = arr.pop()
+                temp.next = node
+                temp = temp.next
+        return head
+                
+                
+                    
+                
     
     
     
@@ -158,3 +176,6 @@ head.next.next.child.next.child = ChildNode(11)
 head.next.next.child.next .child= ChildNode(12)
 head.next.next.child.next.next = ChildNode(9)
 head.next.next.child.next.next.next = ChildNode(10)
+
+multiLevelList = head
+
