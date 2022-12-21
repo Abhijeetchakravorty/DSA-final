@@ -11,6 +11,12 @@ class ChildNode:
         self.prev = prev
         self.child = child
 
+class RandomNode:
+    def __init__(self, val=None, next=None, prev=None, random=None):
+        self.val = val
+        self.next = next
+        self.random = random
+
 class MyLinkedList:      
     def __init__(self):
         self.head = None
@@ -114,21 +120,93 @@ class MyLinkedList:
     
     def flattenList(self, head):
         temp = head
-        arr = []
-        res = []
-        while(temp):
-            if (temp.next):
-                if (temp.child):
-                    arr.append(temp.next)
-                    temp.next = temp.child
-                    temp.child = None
-                    temp = temp.next
-            else:
-                node = arr.pop()
+        st = []
+        while(temp): #rotating over the temp list
+            if(temp.child): # check if temp has child
+                if (temp.next): #check if temp has next
+                   st.append(temp.next) # append the next element if it exists
+                temp.next = temp.child
+                temp.child.prev = temp
+                temp.child = None
+            elif not temp.next and len(st):
+                node = st.pop()
                 temp.next = node
-                temp = temp.next
+                node.prev = temp
+            temp = temp.next
         return head
                 
+        
+    
+    
+    # What can I do to copy random pointer
+    # 
+    def randomPointer(self, head):
+        temp = head
+        if(temp==None):
+            return None
+        baseHead = newHead = RandomNode(temp.val)
+        newArr = []
+        nodeArr = []
+        newArr.append(newHead.val)
+        nodeArr.append(newHead)
+        
+        # Create two arrays
+        # First array should have the new node
+        # 2nd array should have the index of the random pointer from the temp array
+        while(temp):
+            if not temp.next:
+                break
+            newHead.next = RandomNode(temp.next.val)
+            newArr.append(newHead.next.val)
+            nodeArr.append(newHead.next)
+            newHead = newHead.next
+            temp = temp.next
+            
+        temp = head
+        newArr.append(None)
+        nodeArr.append(None)
+        newTemp = baseHead
+        # print(newArr)
+        i=0
+        while(temp):
+            if(temp.random != None):
+                index = newArr.index(temp.random.val)
+            else:
+                index = newArr.index(temp.random)
+            nodeArr[i].random = nodeArr[index]
+            # print(index)
+            i+=1
+            temp = temp.next
+        
+        while(baseHead):
+            if (baseHead.random != None):
+                print(baseHead.random.val)
+            else:
+                print(baseHead.random)
+            baseHead = baseHead.next
+        newArr = []
+        nodeArr = []
+        return newTemp
+        
+        
+            
+            
+            
+        
+        # print(arr)
+        
+        # while(temp):
+        #     print(temp.val)
+        #     temp = temp.next
+            
+        # assign random pointer to the node
+        
+        
+            
+              
+            
+        
+        
                 
                     
                 
@@ -140,7 +218,7 @@ class MyLinkedList:
 
 arr = [1, 3, 5, 7, 9]
 arr2 = [2, 4, 6, 8, 10]
-head = MyLinkedList()
+headOne = MyLinkedList()
 # list = head.createDynamicSinglyList(arr)
 # print(head.isPalindrome(list))
 # newList = head.reverseList(list)  # reverse List
@@ -164,18 +242,47 @@ head = MyLinkedList()
 # head.printDoublyList(doublyList)
 
 
-head.val = ChildNode(1)
-head.next = ChildNode(2)
-head.next.next = ChildNode(3)
-head.next.next.next = ChildNode(4)
-head.next.next.next.next = ChildNode(5)
-head.next.next.next.next.next = ChildNode(6)
-head.next.next.child = ChildNode(7)
-head.next.next.child.next = ChildNode(8)
-head.next.next.child.next.child = ChildNode(11)
-head.next.next.child.next .child= ChildNode(12)
-head.next.next.child.next.next = ChildNode(9)
-head.next.next.child.next.next.next = ChildNode(10)
 
-multiLevelList = head
+# For flattening linked list start
+# head = ChildNode(1)
+# head.next = ChildNode(2)
+# head.next.next = ChildNode(3)
+# head.next.next.next = ChildNode(4)
+# head.next.next.next.next = ChildNode(5)
+# head.next.next.next.next.next = ChildNode(6)
+# head.next.next.child = ChildNode(7)
+# head.next.next.child.next = ChildNode(8)
+# head.next.next.child.next.child = ChildNode(11)
+# head.next.next.child.next.child.next = ChildNode(12)
+# head.next.next.child.next.next = ChildNode(9)
+# head.next.next.child.next.next.next = ChildNode(10)
+
+# multiLevelList = head
+# flatten = headOne.flattenList(multiLevelList)
+# headOne.printList(flatten)
+#for flattening linked list end
+
+
+## For copying list with random pointer
+head1 = RandomNode(7)
+head2 = RandomNode(13)
+head3 = RandomNode(11)
+head4 = RandomNode(10)
+head5 = RandomNode(1)
+
+head1.next = head2
+head2.next = head3
+head3.next = head4
+head4.next = head5
+
+head1.random = None
+head2.random = head1
+head3.random = head5
+head4.random = head3
+head5.random = head1
+
+headOne.randomPointer(head1)
+
+
+
 
