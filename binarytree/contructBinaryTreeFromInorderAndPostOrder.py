@@ -63,6 +63,16 @@ class Solution:
                     st.append((node.left, False))
         return traversal
     
+    
+    def levelOrder(self, root):
+        q = []
+        r = []
+        t = []
+        
+        if(root != None):
+            pass
+            
+    
     #       1
     #     /   \
     #    2     3
