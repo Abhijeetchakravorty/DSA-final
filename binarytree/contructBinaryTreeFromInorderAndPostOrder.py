@@ -26,7 +26,7 @@ class Solution:
                 st.append(node.left)
         return res
     
-    # LEFT, RIGHT, ROOT 
+    # LEFT, ROOT, RIGHT 
     # [4, 2, 5, 1, 6, 3, 7]
     def inOrder(self, root):
         curr = root
@@ -70,8 +70,23 @@ class Solution:
         t = []
         
         if(root != None):
-            pass
-            
+            q.append(root)
+            q.append("X")
+        
+        while(len(q) > 0):
+            head = q.pop(0)
+            if(head == "X"):
+                r.append(t)
+                if(len(q) > 0):
+                    q.append("X")
+                    t = []
+            else:
+                t.append(head.val)
+                if(head.left):
+                    q.append(head.left)
+                if(head.right):
+                    q.append(head.right)
+        return r
     
     #       1
     #     /   \

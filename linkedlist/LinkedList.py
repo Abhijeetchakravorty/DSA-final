@@ -190,7 +190,7 @@ class MyLinkedList:
         if count == 0:
             return None
         
-        realCount = k % count # I don't know why we do this
+        realCount = k % count
         
         if realCount == 0:
             return head
