@@ -5,19 +5,10 @@ class Solution:
     def twoSum(self, nums, target):
         numMap = dict()
         for i in range(len(nums)):
-            complement = target - nums[i]
-            if complement in numMap:
-                return [numMap[complement], i]
-            numMap[nums[i]] = i
-#Approach
-#Start by setting a number and its index
-#Iterate over the array by using that index and its vakue
-#In case currnt num+previously set index == target then return the indexes
-#In casse not then increment the index
-        
-            
-                
-    
+            complement = target - nums[i] # We calculate the complement
+            if complement in numMap: # If we have the complement then
+                return [numMap[complement], i] # we return the current index and the index of the complement present in numMap
+            numMap[nums[i]] = i # We are storing the num in a dictionary
 
     
             

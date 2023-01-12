@@ -63,7 +63,6 @@ class Solution:
                     st.append((node.left, False))
         return traversal
     
-    
     def levelOrder(self, root):
         q = []
         r = []
@@ -87,6 +86,52 @@ class Solution:
                 if(head.right):
                     q.append(head.right)
         return r
+
+    def maxDepth(self, root):
+        if not root:
+            return 0
+        max_depth = 0
+        def dfs(node, depth):
+            nonlocal max_depth
+            
+            if not node.left and not node.right:
+                max_depth = max(max_depth, depth)
+            
+            if node.left:
+                dfs(node.left, depth+1)
+            
+            if node.right:
+                dfs(node.right, depth+1)
+        
+        dfs(root, 1)
+        return max_depth
+    
+    def isSame(self, p, q):
+        if p and q:
+            return (p.val==q.val and self.isSame(p.left, q.right) and self.isSame(p.right, q.left))
+        return p is q
+    
+    def isSymmetric(self, root):
+        if root:
+            return self.isSame(root.left, root.right)
+        else:
+            return False
+    
+    def hasPathSum(self, root, sum):
+        if not root:
+            return False
+        
+        de = [(root, sum - root.val), ]
+        while de:
+            node, curr_sum = de.pop()
+            if not node.left and not node.right and curr_sum == 0:
+                return True
+            if node.right:
+                de.append((node.right, curr_sum - node.right.val))
+            if node.left:
+                de.append((node.left, curr_sum - node.left.val))
+        return False
+    
     
     #       1
     #     /   \
@@ -96,11 +141,11 @@ class Solution:
     # InOrder  :  [4, 2, 5, 1, 6, 3, 7] LEFT, ROOT, RIGHT
     # PostOrder:  [4, 5, 2, 6, 7, 3, 1] LEFT, RIGHT, ROOT
     def buildTree(self, inorder=None, postorder=None):
-        print("Inorder: ", inorder) #Inorder --> LEFT, ROOT, RIGHT
-        print("Postorder: ", postorder) #Postorder --> LEFT, RIGHT, ROOT
-        self.index = len(postorder)
+        # print("Inorder: ", inorder) #Inorder --> LEFT, ROOT, RIGHT
+        # print("Postorder: ", postorder) #Postorder --> LEFT, RIGHT, ROOT
+        self.index = len(postorder) 
         hashMap = {n: i for i, n in enumerate(inorder)}
-        
+        print("hashMap: ", hashMap)
         def helper(l, r):
             if l > r:                   # checking l > r
                 return None             # Return none if condition true
@@ -116,10 +161,25 @@ class Solution:
             return root                 # Finally returning root
         
         return helper(0, len(inorder)-1)
-        
-        
-        
-        
+
+    
+    #postorder: LEFT, RIGHT, ROOT
+    #build tree from preorder and inorder traversal
+    # preorder: ROOT, LEFT, RIGHT
+    # inorder: LEFT, ROOT, RIGHT
+    def buildPreIn(self, preorder=None, inorder=None):
+        self.index = 0
+        hashMap = {n:i for i, n in enumerate(inorder)}
+        def helper(lo, hi):
+            if lo > hi:
+                return None
+            node = TreeNode()
+            node.val = preorder[self.index]
+            self.index += 1
+            node.left = helper(lo, hashMap[node.val]-1)
+            node.right = helper(hashMap[node.val]+1, hi)
+            return node
+        return helper(0, len(preorder)-1)
 
 
 # In order traversal tree
@@ -136,6 +196,8 @@ rootData.left.right = TreeNode(5)
 rootData.right.left = TreeNode(6)
 rootData.right.right = TreeNode(7)
 
-print("PreOrder: ", Solution().preOrder(rootData))
-print("InOrder: ", Solution().inOrder(rootData))
-print("PostOrder: ", Solution().postOrder(rootData))
+# print("PreOrder: ", Solution().preOrder(rootData))
+# print("InOrder: ", Solution().inOrder(rootData))
+# print("PostOrder: ", Solution().postOrder(rootData))
+rootTree = Solution().buildTree(inorder, postOrder)
+print("Construct Binary Tree: ", Solution().preOrder(rootTree))
