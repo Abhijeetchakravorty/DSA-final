@@ -49,6 +49,7 @@ class Solution:
     
     #LEFT, RIGHT, ROOT
     # PostOrder:  [4, 5, 2, 6, 7, 3, 1]
+    
     def postOrder(self, root):
         traversal, st = [], [(root, False)]
         
@@ -61,7 +62,6 @@ class Solution:
                     st.append((node, True))
                     st.append((node.right, False))
                     st.append((node.left, False))
-        return traversal
     
     def levelOrder(self, root):
         q = []
@@ -157,29 +157,37 @@ class Solution:
             i = hashMap[n]              # Getting the index value of nth node
             root.right = helper(i+1, r) # Setting the right node
             root.left = helper(l, i-1)  # Setting the left node
-             
             return root                 # Finally returning root
         
         return helper(0, len(inorder)-1)
 
-    
-    #postorder: LEFT, RIGHT, ROOT
     #build tree from preorder and inorder traversal
     # preorder: ROOT, LEFT, RIGHT
     # inorder: LEFT, ROOT, RIGHT
     def buildPreIn(self, preorder=None, inorder=None):
-        self.index = 0
-        hashMap = {n:i for i, n in enumerate(inorder)}
+        self.index = 0 # We start with the 0th index
+        hashMap = {n:i for i, n in enumerate(inorder)} #We then move to a hashMap
+        # Our hashMap where we store data which is created from inorder --> LEFT, ROOT, RIGHT
+        # {
+            # 9: 0, 
+            # 3: 1, 
+            # 15: 2, 
+            # 20: 3, 
+            # 7: 4
+        # }
         def helper(lo, hi):
             if lo > hi:
                 return None
             node = TreeNode()
+            #preorder: [3, 9, 20, 15, 7]
             node.val = preorder[self.index]
             self.index += 1
             node.left = helper(lo, hashMap[node.val]-1)
             node.right = helper(hashMap[node.val]+1, hi)
             return node
         return helper(0, len(preorder)-1)
+    
+    
 
 
 # In order traversal tree
@@ -199,5 +207,10 @@ rootData.right.right = TreeNode(7)
 # print("PreOrder: ", Solution().preOrder(rootData))
 # print("InOrder: ", Solution().inOrder(rootData))
 # print("PostOrder: ", Solution().postOrder(rootData))
-rootTree = Solution().buildTree(inorder, postOrder)
-print("Construct Binary Tree: ", Solution().preOrder(rootTree))
+
+# rootTree = Solution().buildTree(inorder, postOrder)
+# print("Construct Binary Tree: ", Solution().preOrder(rootTree))
+
+preorder = [3,9,20,15,7]
+inorder = [9,3,15,20,7]
+newRoot = Solution().buildPreIn(preorder, inorder)

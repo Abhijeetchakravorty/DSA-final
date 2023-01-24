@@ -2,6 +2,35 @@ class Solution:
     def __init__(self):
         pass
     
+    def maxConsecutiveOnes(self, arr):
+        count = 0
+        result = 0
+        for i in range(len(arr)):
+            if(arr[i]==1):
+                count += 1
+            else:
+                result = max(count, result)
+                count = 0
+        result = max(result, count)
+        return result
+    
+    def findEvenNumbers(self, arr):
+        count = 0
+        for i in range(len(arr)):
+            if(len(str(arr[i]))%2==0):
+                count += 1
+        return count
+    
+    def squareSortedArr(self, nums):
+        arr = sorted([i*i for i in nums])
+        return arr
+    
+    # def duplicateZeroes(self, nums):
+        
+    
+    
+    
+    # Two sum
     def twoSum(self, nums, target):
         numMap = dict()
         for i in range(len(nums)):
